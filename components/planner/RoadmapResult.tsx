@@ -58,7 +58,7 @@ export default function RoadmapResult({ plan, goalLabel, onReset }: RoadmapResul
                     Designed for a <span className="font-bold text-white">{goalLabel}</span> role.
                 </p>
 
-                <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mt-8">
+                <div className="grid grid-cols-3 md:grid-cols-5 gap-3 mt-8">
                     <StatCard label="Timeline" value={`${plan.estimatedMonths} Months`} />
                     <StatCard label="Pace" value={`${plan.hoursPerWeek}h / week`} />
                     <StatCard label="Modules" value={`${plan.totalModules}`} />
@@ -247,8 +247,8 @@ const SimpleTooltip = ({ children, content }: { children: React.ReactNode; conte
 
 function StatCard({ label, value }: { label: string; value: string }) {
     return (
-        <div className="bg-white/10 p-4 rounded-xl backdrop-blur-sm">
-            <div className="text-xs text-blue-200 uppercase tracking-wider font-bold mb-1">{label}</div>
+        <div className="bg-white/10 p-4 rounded-xl backdrop-blur-sm flex flex-col justify-between">
+            <div className="text-xs text-blue-200 uppercase tracking-wider font-bold mb-2 min-h-[2rem] flex items-end">{label}</div>
             <div className="text-2xl font-bold">{value}</div>
         </div>
     );

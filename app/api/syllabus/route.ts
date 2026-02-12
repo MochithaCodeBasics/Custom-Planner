@@ -19,14 +19,11 @@ export async function PUT(req: NextRequest) {
     try {
         const body = await req.json();
 
-        if (!body.modules || !Array.isArray(body.modules)) {
-            return NextResponse.json({ error: "modules array is required" }, { status: 400 });
+        if (!body.subjects || !Array.isArray(body.subjects)) {
+            return NextResponse.json({ error: "subjects array is required" }, { status: 400 });
         }
-        if (!body.phases || !Array.isArray(body.phases)) {
-            return NextResponse.json({ error: "phases array is required" }, { status: 400 });
-        }
-        if (!body.categories || !Array.isArray(body.categories)) {
-            return NextResponse.json({ error: "categories array is required" }, { status: 400 });
+        if (!body.chapters || !Array.isArray(body.chapters)) {
+            return NextResponse.json({ error: "chapters array is required" }, { status: 400 });
         }
 
         await writeSyllabus(body);

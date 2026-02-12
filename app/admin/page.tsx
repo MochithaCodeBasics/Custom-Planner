@@ -259,13 +259,27 @@ export default function AdminDashboard() {
     }
 
     function saveSubject() {
-        if (!data || !editingSubject.id || !editingSubject.name) return;
+        if (!data || !editingSubject.name) return;
+        const subjectToSave = { ...editingSubject };
+        if (isNewSubject && !subjectToSave.id) {
+            subjectToSave.id = "sub-" + editingSubject.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+        }
+        if (!subjectToSave.id) return;
+
+        // Ensure all assigned chapters have the correct subjectId
+        const updatedChapters = data.chapters.map(ch =>
+            subjectToSave.chapterIds.includes(ch.id)
+                ? { ...ch, subjectId: subjectToSave.id }
+                : ch
+        );
+
         if (isNewSubject) {
-            setData({ ...data, subjects: [...data.subjects, editingSubject] });
+            setData({ ...data, subjects: [...data.subjects, subjectToSave], chapters: updatedChapters });
         } else {
             setData({
                 ...data,
-                subjects: data.subjects.map(s => s.id === editingSubject.id ? editingSubject : s),
+                subjects: data.subjects.map(s => s.id === subjectToSave.id ? subjectToSave : s),
+                chapters: updatedChapters,
             });
         }
         setDirty(true);
@@ -282,30 +296,34 @@ export default function AdminDashboard() {
     }
 
     function handleQuickAddChapter() {
-        if (!data || !quickChapterTitle.trim()) return;
-        const maxNum = data.chapters.reduce((max, ch) => {
-            const num = parseInt(ch.id.replace(/\D/g, "")) || 0;
-            return num > max ? num : max;
-        }, 0);
-        const newId = `ch${maxNum + 1}`;
-        const newChapter: Chapter = {
-            id: newId,
-            title: quickChapterTitle.trim(),
-            subjectId: editingSubject.id,
-            durationWeeks: 1,
-            isProject: false,
-            topics: [],
-        };
+        if (!quickChapterTitle.trim()) return;
+        const title = quickChapterTitle.trim();
 
-        setData(prev => prev ? ({
-            ...prev,
-            chapters: [...prev.chapters, newChapter]
-        }) : null);
+        setData(prev => {
+            if (!prev) return prev;
+            const maxNum = prev.chapters.reduce((max, ch) => {
+                const num = parseInt(ch.id.replace(/\D/g, "")) || 0;
+                return num > max ? num : max;
+            }, 0);
+            const newId = `ch${maxNum + 1}`;
+            const newChapter: Chapter = {
+                id: newId,
+                title,
+                subjectId: editingSubject.id,
+                durationWeeks: 1,
+                isProject: false,
+                topics: [],
+            };
 
-        setEditingSubject(prev => ({
-            ...prev,
-            chapterIds: [...prev.chapterIds, newId]
-        }));
+            setEditingSubject(prevSub => ({
+                ...prevSub,
+                chapterIds: prevSub.chapterIds.includes(newId)
+                    ? prevSub.chapterIds
+                    : [...prevSub.chapterIds, newId]
+            }));
+
+            return { ...prev, chapters: [...prev.chapters, newChapter] };
+        });
 
         setQuickChapterTitle("");
         setDirty(true);
