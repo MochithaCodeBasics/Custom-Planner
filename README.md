@@ -33,17 +33,12 @@ The **Bootcamp Custom Planner** is a powerful personalization engine built for t
    cd Custom-Planner
    ```
 
-2. **Navigate to the app directory**:
-   ```bash
-   cd bootcamp_custom_planner/bootcamp-planner
-   ```
-
-3. **Install dependencies**:
+2. **Install dependencies**:
    ```bash
    npm install
    ```
 
-4. **Start the development server**:
+3. **Start the development server**:
    ```bash
    npm run dev
    ```
@@ -65,9 +60,9 @@ The app will be available at `http://localhost:3000`.
 
 ## Project Structure
 
-- `bootcamp_custom_planner/bootcamp-planner/`: Core Next.js application.
-- `bootcamp_custom_planner/scripts/`: Utility scripts for data migration and syllabus maintenance.
-- `bootcamp_custom_planner/data/`: The "Base Store" containing the `syllabus_v3.json` source of truth.
+- `app/`, `lib/`, `components/`: Core Next.js application source.
+- `scripts/`: Utility scripts for data migration and syllabus maintenance.
+- `data/`: The "Base Store" containing the `syllabus_v3.json` source of truth.
 
 ---
 
