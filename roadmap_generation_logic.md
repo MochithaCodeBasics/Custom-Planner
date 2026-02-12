@@ -35,10 +35,10 @@ If a user marks existing technical proficiency, the engine removes the foundatio
 - **AI Exp**: Skips corresponding Core ML, DL, or GenAI modules.
 
 ### 4. Category-Based Scaling (The Multipliers)
-The engine applies multipliers to chapter durations based on the `SubjectCategory`:
-- **`foundation` Category**: `Base Duration * profileMultiplier`
-    - Beginner: `1.25x`
-    - Professional/Intermediate: `0.75x - 0.8x`
+- **Profile Multipliers**: Applied to **all** subjects to account for technical literacy:
+    - Beginner: `1.5x` (Added 50% buffer for complex concepts)
+    - Intermediate: `0.9x`
+    - Professional: `0.8x`
 - **`career` Category**: `Base Duration * 1.5x` (if motivation is "First Job").
 - **Role-Specific**: `Base Duration * 0.5x` (Software Devs on Python basics).
 
@@ -47,11 +47,11 @@ The "Final Duration" per chapter is calculated as:
 `Adjusted Duration * availabilityFactor`
 
 **Availability Factors:**
-- **3-5 hrs/week**: `3.5x`
-- **5-10 hrs/week**: `2.0x`
+- **3-5 hrs/week**: `4.0x`
+- **5-10 hrs/week**: `2.5x`
 - **10-20 hrs/week**: `1.0x` (Baseline)
 - **20-30 hrs/week**: `0.6x`
-- **30-40 hrs/week**: `0.5x`
+- **30-40 hrs/week**: `0.45x`
 - **Full-time (40+ hrs/week)**: `0.4x`
 
 ### 6. Timeline Totals
@@ -66,30 +66,18 @@ Finally, the chiseled chapters are grouped back into **Phases** (Modules) based 
 
 ---
 
-## 💡 Example Scenarios
+## Example Scenarios
 
-### Scenario A: The Career Changer (Absolute Beginner)
-- **Profile**: Beginner (`profileMultiplier: 1.25`)
+### Scenario : The Career Changer (Absolute Beginner)
+- **Profile**: Beginner (`profileMultiplier: 1.5`)
 - **Motivation**: First Job (`careerMultiplier: 1.5`)
-- **Availability**: 5-10 hrs/week (`availabilityFactor: 2.0`)
+- **Availability**: 5-10 hrs/week (`availabilityFactor: 2.5`)
 - **Experience**: None
 
 | Module | Base Weeks | Calculation | Final Weeks |
 | :--- | :--- | :--- | :--- |
-| Python (Foundation) | 2.0 | `2.0 * 1.25 (Profile) * 2.0 (Avail)` | **5.0** |
-| GenAI (Core) | 3.0 | `3.0 * 1.0 (N/A) * 2.0 (Avail)` | **6.0** |
-| Career Prep (Career) | 1.0 | `1.0 * 1.5 (Motivation) * 2.0 (Avail)` | **3.0** |
-| **Total** | **6.0** | | **14.0 Weeks** |
+| Python (Foundation) | 2.0 | `2.0 * 1.5 (Profile) * 2.5 (Avail)` | **7.5** |
+| GenAI (Core) | 3.0 | `3.0 * 1.5 (Profile) * 2.5 (Avail)` | **11.3** |
+| Career Prep (Career) | 1.0 | `1.0 * 1.5 (Motiv) * 1.5 (Profile) * 2.5 (Avail)` | **5.6** |
+| **Total** | **6.0** | | **24.4 Weeks** |
 
-### Scenario B: The Software Developer (Upskilling)
-- **Profile**: Professional (`profileMultiplier: 0.80`)
-- **Motivation**: Skill Enhance (`careerMultiplier: 1.0`)
-- **Availability**: Full-time (`availabilityFactor: 0.4`)
-- **Experience**: Python, SQL
-
-| Module | Base Weeks | Calculation | Final Weeks |
-| :--- | :--- | :--- | :--- |
-| Python (Foundation) | 2.0 | `SKIP (Already knows)` | **0.0** |
-| Advanced SQL | 1.0 | `SKIP (Already knows)` | **0.0** |
-| ML Core (Foundation) | 4.0 | `4.0 * 0.8 (Profile) * 0.4 (Avail)` | **1.28 ~ 1.3** |
-| **Total** | **7.0** | | **~ 1.3 Weeks** |

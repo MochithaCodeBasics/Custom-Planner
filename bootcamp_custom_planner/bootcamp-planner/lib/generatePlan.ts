@@ -127,16 +127,17 @@ export function generatePlan(input: PlanInput): PlanResult {
 
     // ===== 4. TIME ADJUSTMENTS =====
     let profileMultiplier = 1.0;
-    if (profile === 'beginner') profileMultiplier = 1.25;
-    else if (profile === 'intermediate') profileMultiplier = 0.75;
+    if (profile === 'beginner') profileMultiplier = 1.5;
+    else if (profile === 'intermediate') profileMultiplier = 0.9;
     else if (profile === 'professional') profileMultiplier = 0.8;
 
     // Apply multipliers
     chapters = chapters.map(ch => {
         let duration = ch.durationWeeks;
 
-        // Profile impact
-        if (getCategory(ch) === 'foundation') duration *= profileMultiplier;
+        // Profile impact (Apply to all subjects, but foundation gets double hit if desired)
+        // For now, apply universally as beginners struggle even with core GenAI
+        duration *= profileMultiplier;
 
         // Role impact
         if (currentRole === 'software-dev' && !experience.python && PYTHON_BASICS_IDS.includes(ch.id)) {
@@ -158,10 +159,10 @@ export function generatePlan(input: PlanInput): PlanResult {
 
     if (availability === '3-5') {
         hoursPerWeek = 4;
-        availabilityFactor = 3.5; // Very slow
+        availabilityFactor = 4.0; // 15 / 4 = 3.75 -> 4.0 for buffer
     } else if (availability === '5-10') {
         hoursPerWeek = 7.5;
-        availabilityFactor = 2.0;
+        availabilityFactor = 2.5; // 15 / 6 = 2.5 -> Safe for 5-10 range
     } else if (availability === '10-20') {
         hoursPerWeek = 15;
         availabilityFactor = 1.0;
@@ -170,10 +171,10 @@ export function generatePlan(input: PlanInput): PlanResult {
         availabilityFactor = 0.6;
     } else if (availability === '30-40') {
         hoursPerWeek = 35;
-        availabilityFactor = 0.5;
+        availabilityFactor = 0.45; // 15 / 35
     } else if (availability === 'full-time') {
         hoursPerWeek = 40;
-        availabilityFactor = 0.4; // Intensive
+        availabilityFactor = 0.4; // 15 / 40 = 0.375 -> 0.4
     }
 
     // Apply availability factor to all chapters
