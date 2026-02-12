@@ -61,7 +61,6 @@ The app will be available at `http://localhost:3000`.
 ## Project Structure
 
 - `app/`, `lib/`, `components/`: Core Next.js application source.
-- `scripts/`: Utility scripts for data migration and syllabus maintenance.
 - `data/`: The "Base Store" containing the `syllabus_v3.json` source of truth.
 
 ---
